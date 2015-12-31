@@ -5,6 +5,7 @@ import StockManager.SimpleDatabase.DataObject;
 import StockManager.SimpleDatabase.SimpleDB;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -44,6 +45,7 @@ public class StockManager
 
     public static void PerformRestock()
     {
+        // @TODO this code needs to be refactored. One method for both would be better.
         Item[] items = __get_items();
 
         System.out.println("Performing a restock on " + items.length + " items.\n");
@@ -69,9 +71,16 @@ public class StockManager
         System.out.println("Restock complete. Thank you, come again.");
     }
 
+
+    public static void GenerateShoppingList()
+    {
+        Map<Item, Double> usage_rates = InventoryEngine.ComputeConsumption(__get_items());
+    }
+
+
     public static void main(String[] args)
     {
-        PerformStocktake();
+        GenerateShoppingList();
     }
 
     private static Item[] __get_items()
