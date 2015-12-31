@@ -4,6 +4,7 @@ import StockManager.Objects.Item;
 import StockManager.Objects.StockRecord;
 import StockManager.SimpleDatabase.SimpleDB;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +16,22 @@ import java.util.concurrent.TimeUnit;
  */
 public class InventoryEngine
 {
+    public static Date ParseDate(String unparsed_date)
+    {
+        SimpleDateFormat sdfmt1 = new SimpleDateFormat("dd/MM/yy");
+        Date res = null;
+        try
+        {
+            res = sdfmt1.parse(unparsed_date);
+        }
+        catch (Exception e)
+        {
+            // @TODO make this meaningful
+        }
+        return res;
+    }
+
+
     public static void AddStocktakeRecord(Item item, int quantity, Date date)
     {
         __add_record(item, quantity, date, false);
@@ -41,7 +58,7 @@ public class InventoryEngine
 
     /**
      * Shamelessly taken from the internet.
-     * 
+     *
      * Get a diff between two dates
      * @param date1 the oldest date
      * @param date2 the newest date
