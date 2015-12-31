@@ -154,6 +154,7 @@ public class SimpleDB
             catch (Exception e)
             {
                 System.out.println("SQL error on insert.");
+                System.out.println(query);
                 e.printStackTrace();
             }
         }
@@ -174,6 +175,7 @@ public class SimpleDB
             catch (Exception e)
             {
                 System.out.println("SQL error on update.");
+                System.out.println(query);
                 e.printStackTrace();
             }
         }
@@ -228,7 +230,6 @@ public class SimpleDB
         for (String col: column_declarations)
             query += col + ", ";
         query += "PrimaryKey INTEGER PRIMARY KEY);";
-
 
         // GO GO GO
         try
@@ -344,7 +345,7 @@ public class SimpleDB
 
         for (Field f: holding_array)
         {
-            Class current_class = f.getClass();
+            Class current_class = f.getType();
             try
             {
                 String res = (String) current_class.getMethod("SQLColumnDescriptor").invoke(null);

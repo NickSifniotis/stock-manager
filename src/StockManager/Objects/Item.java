@@ -22,6 +22,6 @@ import StockManager.SimpleDatabase.Columns.*;
  */
 public class Item extends DataObject
 {
-    public TextColumn item_name;
-    public TextColumn item_quantity;
+    public TextColumn item_name = new TextColumn();
+    public TextColumn item_quantity = new TextColumn();
 }

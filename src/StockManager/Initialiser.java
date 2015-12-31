@@ -22,14 +22,14 @@ public class Initialiser
         SimpleDB.CreateTable(StockRecord.class);
 
         // put in some dummy data
-        Item toilet_paper = new Item();
+        Item toilet_paper = (Item)SimpleDB.New(Item.class);
         toilet_paper.item_name.Value = "Toilet Paper";
         toilet_paper.item_quantity.Value = "rolls";
-
         SimpleDB.Save(toilet_paper);
 
-        Item toothpaste = new Item();
+        Item toothpaste = (Item)SimpleDB.New(Item.class);
         toothpaste.item_name.Value = "Toothpaste";
         toothpaste.item_quantity.Value = "tubes";
+        SimpleDB.Save(toothpaste);
     }
 }
