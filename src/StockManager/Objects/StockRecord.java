@@ -19,8 +19,8 @@ import StockManager.SimpleDatabase.DataObject;
  */
 public class StockRecord extends DataObject
 {
-    public IntegerColumn item_id;
-    public IntegerColumn quantity;
-    public IntegerColumn date;
-    public BooleanColumn is_restock;
+    public IntegerColumn item_id = new IntegerColumn();
+    public IntegerColumn quantity = new IntegerColumn();
+    public IntegerColumn date = new IntegerColumn();
+    public BooleanColumn is_restock = new BooleanColumn();
 }
