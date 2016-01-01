@@ -4,9 +4,7 @@ import StockManager.Objects.Item;
 import StockManager.SimpleDatabase.DataObject;
 import StockManager.SimpleDatabase.SimpleDB;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author Nick Sifniotis u5809912
@@ -75,6 +73,13 @@ public class StockManager
     public static void GenerateShoppingList()
     {
         Map<Item, Double> usage_rates = InventoryEngine.ComputeConsumption(__get_items());
+        Set<Item> keys = usage_rates.keySet();
+        for (Iterator<Item> it = keys.iterator(); it.hasNext(); )
+        {
+            Item i = it.next();
+
+            System.out.println("Item " + i.item_name.Value + ": " + (usage_rates.get(i) * 7) + " " + i.item_quantity.Value + "/week");
+        }
     }
 
 

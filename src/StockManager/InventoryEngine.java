@@ -88,13 +88,38 @@ public class InventoryEngine
                 record_list.toArray(record_array);
 
                 Arrays.sort(record_array);
+                int total_restocks = 0;
+                StockRecord first = null;
+                StockRecord last = null;
 
-                int date_differential = record_array[record_array.length - 1].date.Value - record_array[0].date.Value;
-                System.out.println(date_differential);
+                for (StockRecord record: record_array)
+                {
+                    if (first == null)
+                    {
+                        if (!record.is_restock.Value)
+                            first = record;
+                    }
+                    else
+                        if (record.is_restock.Value)
+                            total_restocks += record.quantity.Value;
+                        else
+                            last = record;
+                }
+
+                if (first != null && last != null)
+                {
+                    int date_differential = last.date.Value - first.date.Value;
+                    int usage = first.quantity.Value + total_restocks - last.quantity.Value;
+
+                    res.put(item, usage / (double) date_differential);
+                }
+                else
+                    System.out.println("Insufficient data for item " + item.item_name.Value + ". Please stocktake and try again.");
             }
         }
         return res;
     }
+
 
     private static void __add_record(Item item, int quantity, Date date, boolean is_restock)
     {
