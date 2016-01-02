@@ -18,16 +18,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class InventoryEngine
 {
-
-    public static Date AddDays(Date date, int num_days)
-    {
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        c.add(Calendar.DATE, num_days);
-        return c.getTime();
-    }
-
-
     public static Date ParseDate(String unparsed_date)
     {
         SimpleDateFormat sdfmt1 = new SimpleDateFormat("dd/MM/yy");
@@ -44,13 +34,13 @@ public class InventoryEngine
     }
 
 
-    public static void AddStocktakeRecord(Item item, int quantity, Date date)
+    public static void AddStocktakeRecord(Item item, int quantity, int date)
     {
         __add_record(item, quantity, date, false);
     }
 
 
-    public static void AddRestockRecord(Item item, int quantity, Date date)
+    public static void AddRestockRecord(Item item, int quantity, int date)
     {
         __add_record(item, quantity, date, true);
     }
@@ -121,40 +111,14 @@ public class InventoryEngine
     }
 
 
-    private static void __add_record(Item item, int quantity, Date date, boolean is_restock)
+    private static void __add_record(Item item, int quantity, int date, boolean is_restock)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date start_date = null;
-        try
-        {
-            start_date = sdf.parse("01/12/2015");
-        }
-        catch (Exception e)
-        {
-            // do nothing
-        }
-
         StockRecord new_record = (StockRecord) SimpleDB.New(StockRecord.class);
         new_record.item_id.Value = item.PrimaryKey;
         new_record.is_restock.Value = is_restock;
         new_record.quantity.Value = quantity;
-        new_record.date.Value = (int)getDateDiff(start_date, date);
+        new_record.date.Value = date;
 
         SimpleDB.Save(new_record);
-    }
-
-
-    /**
-     * Shamelessly taken from the internet.
-     *
-     * Get a diff between two dates
-     * @param date1 the oldest date
-     * @param date2 the newest date
-     * @return the diff value, in the provided unit
-     */
-    public static long getDateDiff(Date date1, Date date2)
-    {
-        long diffInMillies = date2.getTime() - date1.getTime();
-        return TimeUnit.MILLISECONDS.toDays(diffInMillies);
     }
 }

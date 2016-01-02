@@ -2,6 +2,7 @@ package StockManager.Objects;
 
 import StockManager.SimpleDatabase.DataObject;
 import StockManager.SimpleDatabase.Columns.*;
+import StockManager.SimpleDatabase.SimpleDB;
 
 
 /**
@@ -24,4 +25,16 @@ public class Item extends DataObject
 {
     public TextColumn item_name = new TextColumn();
     public TextColumn item_quantity = new TextColumn();
+
+
+    public static Item[] LoadAll()
+    {
+        DataObject[] items = SimpleDB.LoadAll(Item.class);
+        Item[] res = new Item[items.length];
+
+        for (int i = 0; i < items.length; i++)
+            res[i] = (Item) items[i];
+
+        return res;
+    }
 }
