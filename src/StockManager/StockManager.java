@@ -1,9 +1,11 @@
 package StockManager;
 
 import StockManager.Objects.Item;
+import StockManager.Objects.ShoppingTuple;
 import StockManager.SimpleDatabase.DataObject;
 import StockManager.SimpleDatabase.SimpleDB;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -72,13 +74,28 @@ public class StockManager
 
     public static void GenerateShoppingList()
     {
-        Map<Item, Double> usage_rates = InventoryEngine.ComputeConsumption(__get_items());
-        Set<Item> keys = usage_rates.keySet();
-        for (Iterator<Item> it = keys.iterator(); it.hasNext(); )
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date start_date = null;
+        try
         {
-            Item i = it.next();
+            start_date = sdf.parse("01/12/2015");
+        }
+        catch (Exception e)
+        {
+            // it'll never ever happen
+        }
 
-            System.out.println("Item " + i.item_name.Value + ": " + (usage_rates.get(i) * 7) + " " + i.item_quantity.Value + "/week");
+        List<ShoppingTuple> usage_rates = InventoryEngine.ComputeConsumption(__get_items());
+        for (ShoppingTuple record: usage_rates)
+        {
+            Item i = record.item;
+            int on_hand = record.current_record.quantity.Value;
+            int days_remaining = (int)(on_hand / record.consumption_rate);
+            Date finished_date = InventoryEngine.AddDays(start_date, record.current_record.date.Value + days_remaining);
+
+            System.out.println("ITEM: " + i.item_name.Value + "  ON HAND: " + on_hand
+                    + "  USAGE: " + (record.consumption_rate * 7) + " " + i.item_quantity.Value + "/week  EST REMAINING: "
+                    + days_remaining + "  EST RUNOUT DATE: " + sdf.format(finished_date));
         }
     }
 
