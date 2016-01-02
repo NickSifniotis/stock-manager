@@ -2,7 +2,6 @@ package StockManager;
 
 import StockManager.Objects.Item;
 import StockManager.Objects.ShoppingTuple;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,12 +22,7 @@ public class StockManager
         System.out.println("Enter the date of the " + word + " (leave blank for today's date): ");
         Scanner in = new Scanner(System.in);
         String unparsed_date = in.nextLine();
-
-        Date date;
-        if (unparsed_date.equals(""))
-            date = new Date();
-        else
-            date = InventoryEngine.ParseDate(unparsed_date);
+        int date = Calendar.GetDateAsInt(unparsed_date);
 
         for (Item i: items)
         {
