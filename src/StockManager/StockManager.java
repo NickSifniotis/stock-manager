@@ -2,6 +2,7 @@ package StockManager;
 
 import StockManager.Objects.Item;
 import StockManager.Objects.ShoppingTuple;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,11 +54,34 @@ public class StockManager
                     + "  USAGE: " + (record.consumption_rate * 7) + " " + i.item_quantity.Value + "/week  EST REMAINING: "
                     + days_remaining + "  EST RUNOUT DATE: " + Calendar.GetDateAsString(finishing_date));
         }
+
+        System.out.println ("Enter the date that you want to replenish your stock to:");
+        Scanner in = new Scanner(System.in);
+        String unparsed_date = in.nextLine();
+        int date_to = Calendar.GetDateAsInt(unparsed_date);
+
+        for (ShoppingTuple record: usage_rates)
+        {
+            int stock_required = (int)((date_to - record.current_record.date.Value) * record.consumption_rate);
+            int stock_to_buy = stock_required - record.current_record.quantity.Value;
+
+            if (stock_to_buy > 0)
+                System.out.println(record.item.item_name.Value + ": " + stock_to_buy + " " + record.item.item_quantity.Value);
+        }
     }
 
 
     public static void main(String[] args)
     {
-        GenerateShoppingList();
+        SystemOptions.ParseOptions(args);
+
+        if (SystemOptions.do_restock)
+            PerformStocktake(true);
+
+        if (SystemOptions.do_stocktake)
+            PerformStocktake(false);
+
+        if (SystemOptions.do_shopping)
+            GenerateShoppingList();
     }
 }
