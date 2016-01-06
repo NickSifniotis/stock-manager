@@ -75,6 +75,11 @@ public class StockManager
     {
         SystemOptions.ParseOptions(args);
 
+        if (SystemOptions.databases_are_target)
+        {
+
+        }
+
         if (SystemOptions.do_restock)
             PerformStocktake(true);
 

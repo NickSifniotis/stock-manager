@@ -30,8 +30,17 @@ public class SystemOptions
     /** True if the program is to dump as much information as possible to the screen. **/
     public static boolean verbose;
 
-    /** True if the user simply wants a report on current stock quantities. **/
+    /** True if the user simply wants a status report. **/
     public static boolean do_status;
+
+    /** True if user wants to operate on a database. **/
+    public static boolean databases_are_target;
+
+    /** True if user wants to operate on an item. **/
+    public static boolean items_are_target;
+
+    /** True if user wants to operate on stock levels. **/
+    public static boolean stocks_are_target;
 
     /** The name of the database that the user wants to use for this operation. **/
     public static String database_name;
@@ -62,7 +71,21 @@ public class SystemOptions
         do_stocktake = cmd.hasOption("stocktake");
         do_restock = cmd.hasOption("restock");
         do_shopping = cmd.hasOption("shopping");
+
         do_status = cmd.hasOption("status");
+        if (do_status)
+            switch(cmd.getOptionValue("status"))
+            {
+                case "databases":
+                    databases_are_target = true;
+                    break;
+                case "items":
+                    items_are_target = true;
+                    break;
+                case "stocks":
+                    stocks_are_target = true;
+                    break;
+            }
 
         database_name = (cmd.getOptionValue("database") == null) ? "default" : cmd.getOptionValue("database");
         verbose = cmd.hasOption("verbose");
@@ -102,8 +125,9 @@ public class SystemOptions
                 .build());
 
         res.addOption(Option.builder("s")
-                .desc("Display current stock levels.")
+                .desc("Display the current status. 'database' will show all databases, and 'item' will show all items.")
                 .longOpt("status")
+                .numberOfArgs(1)
                 .build());
 
         res.addOption(Option.builder("d")
