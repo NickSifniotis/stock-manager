@@ -103,23 +103,18 @@ public class InventoryEngine
         List<ShoppingTuple> res = new LinkedList<>();
         Map<Item, List<StockRecord>> record_lists = StockRecord.LoadStockRecords(items);
 
-        Set item_keys = record_lists.keySet();
         // work through the lists one by one.
-        for (Iterator<Item> it = item_keys.iterator(); it.hasNext(); )
+        for (Item item: record_lists.keySet())
         {
-            Item item = it.next();
-            List record_list = record_lists.get(item);
+            List<StockRecord> record_list = record_lists.get(item);
+            Collections.sort (record_list);
 
-            StockRecord[] record_array = new StockRecord[record_list.size()];
-            record_list.toArray(record_array);
-
-            Arrays.sort(record_array);
             int total_restocks = 0;
             StockRecord first = null;
             StockRecord last = null;
             StockRecord current = null;
 
-            for (StockRecord record: record_array)
+            for (StockRecord record: record_list)
             {
                 if (first == null)
                 {

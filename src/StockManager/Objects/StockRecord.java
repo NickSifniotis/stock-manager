@@ -3,10 +3,7 @@ package StockManager.Objects;
 import NickSifniotis.SimpleDatabase.Columns.*;
 import NickSifniotis.SimpleDatabase.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -24,12 +21,27 @@ import java.util.Map;
  */
 public class StockRecord extends DataObject implements Comparable<StockRecord>
 {
+    /** The primary key of this record's row in the database. **/
     public IntegerColumn item_id = new IntegerColumn();
+
+    /** The quantity of stock measured at this point in time. **/
     public IntegerColumn quantity = new IntegerColumn();
+
+    /** The date that this stocktake or restock took place, measured as the number of days after 01/12/2015. **/
     public IntegerColumn date = new IntegerColumn();
+
+    /** True if this is a restock record, false if this is a stocktake record. **/
     public BooleanColumn is_restock = new BooleanColumn();
 
 
+    /**
+     * <p>
+     *     The default ordering for StockRecord objects is by date.
+     * </p>
+     *
+     * @param o Another StockRecord object to compare to.
+     * @return -1 if this instance is ordered before o, 0 if they are equal, and 1 if this instance is order after.
+     */
     @Override
     public int compareTo(StockRecord o)
     {
@@ -37,6 +49,14 @@ public class StockRecord extends DataObject implements Comparable<StockRecord>
     }
 
 
+    /**
+     * <p>
+     *     Duplicate this StockRecord instance. Note that the duplication only affects the objects in memory;
+     *     the database row that this StockRecord corresponds to is <i>not</i> duplicated.
+     * </p>
+     *
+     * @return A deep copy of this instance.
+     */
     public StockRecord copy()
     {
         StockRecord res = new StockRecord();
@@ -49,6 +69,15 @@ public class StockRecord extends DataObject implements Comparable<StockRecord>
     }
 
 
+    /**
+     * <p>
+     *     Loads all StockRecords from the database, and returns them in a format that the InventoryEngine
+     *     methods can use.
+     * </p>
+     *
+     * @param items The items for which to load records.
+     * @return A Map that associates items with lists of their StockRecords
+     */
     public static Map<Item, List<StockRecord>> LoadStockRecords(Item[] items)
     {
         Map<Integer, Item> item_map = new HashMap<>();
@@ -58,7 +87,7 @@ public class StockRecord extends DataObject implements Comparable<StockRecord>
         for (Item i: items)
         {
             item_map.put(i.PrimaryKey, i);
-            record_lists.put(i, new LinkedList<>());
+            record_lists.put(i, new ArrayList<>());
         }
 
         // do the big data load from the database
@@ -70,7 +99,7 @@ public class StockRecord extends DataObject implements Comparable<StockRecord>
             Item working_item = item_map.get(record.item_id.Value);
             if (working_item != null)
             {
-                List working_list = record_lists.get(working_item);
+                List<StockRecord> working_list = record_lists.get(working_item);
                 if (working_list != null)
                     working_list.add(record);
             }
