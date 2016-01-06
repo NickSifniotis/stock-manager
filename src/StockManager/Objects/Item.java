@@ -1,8 +1,7 @@
 package StockManager.Objects;
 
-import StockManager.SimpleDatabase.DataObject;
-import StockManager.SimpleDatabase.Columns.*;
-import StockManager.SimpleDatabase.SimpleDB;
+import NickSifniotis.SimpleDatabase.*;
+import NickSifniotis.SimpleDatabase.Columns.*;
 
 
 /**

@@ -1,9 +1,7 @@
 package StockManager.Objects;
 
-import StockManager.SimpleDatabase.Columns.BooleanColumn;
-import StockManager.SimpleDatabase.Columns.IntegerColumn;
-import StockManager.SimpleDatabase.DataObject;
-import StockManager.SimpleDatabase.SimpleDB;
+import NickSifniotis.SimpleDatabase.Columns.*;
+import NickSifniotis.SimpleDatabase.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;

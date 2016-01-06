@@ -3,7 +3,7 @@ package StockManager;
 import StockManager.Objects.Item;
 import StockManager.Objects.ShoppingTuple;
 import StockManager.Objects.StockRecord;
-import StockManager.SimpleDatabase.SimpleDB;
+import NickSifniotis.SimpleDatabase.SimpleDB;
 
 import java.util.*;
 
